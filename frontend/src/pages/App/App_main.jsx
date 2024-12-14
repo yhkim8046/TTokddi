@@ -1,20 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { mapdata } from "../../data/mapdata";
 import BottomSheet from "../../components/bottomsheet/BottomSheet";
 import Guide from "../../assets/guide.svg";
+import App_guide from "./App_guide";
 
 export default function App_main() {
   const center = { lat: 37.371421, lng: 127.104744 };
+  const [showGuide, setShowGuide] = useState(false);
+
+  const handleGuideClick = () => {
+    setShowGuide(!showGuide);
+  };
 
   return (
     <>
       <Container>
-        <GuideBtn>
+        <GuideBtn onClick={handleGuideClick}>
           <GuideIcon src={Guide} />
           가이드
         </GuideBtn>
+        {showGuide && <App_guide />}
 
         <Map
           center={center}
