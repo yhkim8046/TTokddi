@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const app = express();
 
@@ -15,7 +14,7 @@ const connectDB = async () => {
             useUnifiedTopology: true,
         });
 
-        //MongoDB 연결 성공 로그
+        // MongoDB 연결 성공 로그
         await UserService.seedUsers();
         await StoreService.seedStores();
         console.log('MongoDB 연결 성공!');
@@ -42,29 +41,31 @@ mongoose.connection.on('disconnected', () => {
 // 데이터베이스 연결 실행
 connectDB();
 
-const PORT = 8000;
+// 포트 설정
+const PORT = 5173;
 
 // JSON 요청 본문 파싱을 위해 middleware 추가
 app.use(express.json());
+
+// 모든 요청 로깅 미들웨어
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url} - Body: ${JSON.stringify(req.body)}`);
+    next();
+});
 
 // 기본 라우트
 app.get('/', (req, res) => {
     res.send('Hello, World!');
 });
 
-// 서버 실행
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
-
-app.use(express.json());
-app.use((req, res, next) => {
-    console.log(`${req.method} ${req.url} - Body: ${JSON.stringify(req.body)}`);
-    next();
-});
-
+// 컨트롤러 연결
 const bookingsController = require('./apis/controllers/UserController');
 app.use('/api', bookingsController); // "/api/bookings" 경로로 연결
 
 const StoreController = require('./apis/controllers/StoreController');
-app.use('/api', StoreController);
+app.use('/api', StoreController); // "/api/stores" 경로로 연결
+
+// 서버 실행
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
