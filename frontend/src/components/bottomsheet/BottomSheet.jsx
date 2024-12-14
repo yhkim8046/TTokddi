@@ -13,7 +13,7 @@ const Wrapper = styled(motion.div)`
 
   position: fixed;
   z-index: 1;
-  top: calc(100% - 90px);
+  top: calc(100% - 40px);
   margin: auto;
 
   border-top-left-radius: 12px;
