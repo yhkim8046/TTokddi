@@ -1,17 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import StoreList from "../StoreList/StoreList";
+import StoreDetail from "../StoreList/StoreDetail";
+import { mapdata } from "../../data/mapdata";
 
-export default function Content() {
+export default function Content({ onSelect }) {
+  const [selectedStore, setSelectedStore] = useState(null);
+
+  const handleSelectStore = (store) => {
+    setSelectedStore(store);
+    onSelect && onSelect(store);
+  };
+
   return (
     <>
       <Container>
-        <StoreList
-          name="가게 이름이 너무 길어요;;;;;;"
-          phone="010-0000-0000"
-          state="요청 가능"
-          location="위치위치위치"
-        />
+        {selectedStore ? (
+          <StoreDetail {...selectedStore} />
+        ) : (
+          mapdata.map((store) => (
+            <StoreList
+              key={store.phone}
+              name={store.title}
+              phone={store.phone}
+              state={store.state}
+              location={store.location}
+              onClick={() => handleSelectStore(store)}
+            />
+          ))
+        )}
       </Container>
     </>
   );
@@ -19,4 +36,5 @@ export default function Content() {
 
 const Container = styled.div`
   margin: 24px;
+  overflow: auto;
 `;
