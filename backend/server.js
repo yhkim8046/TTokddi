@@ -2,6 +2,9 @@
 const express = require('express');
 const app = express();
 
+const UserService = require('./apis/services/UserService'); 
+const StoreService = require('./apis/services/StoreService');
+
 const mongoose = require('mongoose');
 require('dotenv').config();
 
@@ -12,7 +15,9 @@ const connectDB = async () => {
             useUnifiedTopology: true,
         });
 
-        // MongoDB 연결 성공 로그
+        //MongoDB 연결 성공 로그
+        await UserService.seedUsers();
+        await StoreService.seedStores();
         console.log('MongoDB 연결 성공!');
     } catch (error) {
         // MongoDB 연결 실패 로그
@@ -51,3 +56,15 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+app.use(express.json());
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url} - Body: ${JSON.stringify(req.body)}`);
+    next();
+});
+
+const bookingsController = require('./apis/controllers/UserController');
+app.use('/api', bookingsController); // "/api/bookings" 경로로 연결
+
+const StoreController = require('./apis/controllers/StoreController');
+app.use('/api', StoreController);
