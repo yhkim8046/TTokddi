@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { mapdata } from "../../data/mapdata";
+import BottomSheet from "../../components/bottomsheet/BottomSheet";
 
 export default function App_main() {
   const center = { lat: 37.371421, lng: 127.104744 };
@@ -29,6 +30,7 @@ export default function App_main() {
             />
           ))}
         </Map>
+        <BottomSheet />
       </Container>
     </>
   );
