@@ -1,16 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 
-export default function Button({ text }) {
+export default function Button({ text, onClick }) {
   return (
     <>
-      <Btn>{text}</Btn>
+      <Btn onClick={onClick}>{text}</Btn>
     </>
   );
 }
 
 const Btn = styled.button`
-  width: 327px;
+  width: 100%;
   height: 54px;
   background-color: #36aa78;
   border-radius: 12px;
