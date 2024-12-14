@@ -3,13 +3,19 @@ import styled from "styled-components";
 import Button from "../../components/Button";
 import back from "../../assets/back.svg";
 import TimePicker from "../../components/TimePicker";
+import { useNavigate } from "react-router-dom";
 
 export default function App_request() {
+  const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    navigate("/");
+  };
   return (
     <>
       <Container>
         <Header>
-          <Icon src={back} />
+          <Icon src={back} onClick={handleBackClick} />
           <Title>요청서 작성</Title>
         </Header>
         <TextCon>
