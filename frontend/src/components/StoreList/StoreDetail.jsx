@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Button from "../Button";
 
 export default function StoreDetail({ title, state, phone, location }) {
   return (
@@ -16,7 +17,7 @@ export default function StoreDetail({ title, state, phone, location }) {
             <Location>{location}</Location>
           </InfoContainer>
         </ListContainer>
-        <Button>요청 보내기</Button>
+        <Button text="요청 보내기" />
       </DetailContainer>
     </>
   );
@@ -87,15 +88,4 @@ const Phone = styled.div`
 const Location = styled.div`
   font-size: 16px;
   color: #5c5c5c;
-`;
-
-const Button = styled.button`
-  width: 327px;
-  height: 54px;
-  background-color: #36aa78;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 700;
-  color: #ffffff;
-  margin-top: 24px;
 `;
