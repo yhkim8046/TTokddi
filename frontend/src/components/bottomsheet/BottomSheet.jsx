@@ -1,10 +1,11 @@
-import React from "react";
+import { useState } from "react";
 import { BOTTOM_SHEET_HEIGHT } from "../../data/BottomOption";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import useBottomSheet from "../../hooks/useBottomSheet";
 import Header from "./Header";
 import Content from "./Content";
+import StoreDetail from "../StoreList/StoreDetail";
 
 const Wrapper = styled(motion.div)`
   display: flex;
@@ -28,18 +29,23 @@ const Wrapper = styled(motion.div)`
 `;
 
 const BottomSheetContent = styled.div`
+  height: 350px;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 function BottomSheet() {
   const { sheet, content } = useBottomSheet();
+  const [clickedContent, setClickedContent] = useState(null);
 
   return (
     <Wrapper ref={sheet}>
       <Header />
       <BottomSheetContent ref={content}>
-        <Content />
+        <Content onSelect={setClickedContent} />
       </BottomSheetContent>
     </Wrapper>
   );

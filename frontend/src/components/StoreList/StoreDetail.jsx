@@ -1,30 +1,39 @@
 import React from "react";
 import styled from "styled-components";
 
-export default function StoreList({ name, state, phone, location, onClick }) {
+export default function StoreDetail({ title, state, phone, location }) {
   return (
     <>
-      <ListContainer onClick={onClick}>
-        <Img />
-        <InfoContainer>
-          <BtnContainer>
-            <StoreName>{name}</StoreName>
-            <OPBtn state={state}>{state}</OPBtn>
-          </BtnContainer>
-          <Phone>{phone}</Phone>
-          <Location>{location}</Location>
-        </InfoContainer>
-      </ListContainer>
+      <DetailContainer>
+        <ListContainer>
+          <Img />
+          <InfoContainer>
+            <BtnContainer>
+              <StoreName>{title}</StoreName>
+              <OPBtn state={state}>{state}</OPBtn>
+            </BtnContainer>
+            <Phone>{phone}</Phone>
+            <Location>{location}</Location>
+          </InfoContainer>
+        </ListContainer>
+        <Button>요청 보내기</Button>
+      </DetailContainer>
     </>
   );
 }
+
+const DetailContainer = styled.div`
+  height: 80%;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+`;
 
 const ListContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
   margin-top: 20px;
-  cursor: pointer;
 `;
 
 const Img = styled.div`
@@ -71,11 +80,22 @@ const OPBtn = styled.div`
 `;
 
 const Phone = styled.div`
-  font-size: 14px;
+  font-size: 16px;
   color: #5c5c5c;
 `;
 
 const Location = styled.div`
-  font-size: 14px;
+  font-size: 16px;
   color: #5c5c5c;
+`;
+
+const Button = styled.button`
+  width: 327px;
+  height: 54px;
+  background-color: #36aa78;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-top: 24px;
 `;
