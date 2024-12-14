@@ -1,4 +1,5 @@
-const express = require("express");
+const express = require('express');
+const cors = require('cors'); // CORS 추가
 const app = express();
 
 const UserService = require("./apis/services/UserService");
@@ -42,7 +43,10 @@ mongoose.connection.on("disconnected", () => {
 connectDB();
 
 // 포트 설정
-const PORT = 8000;
+const PORT = 5173;
+
+// CORS 설정 미들웨어 추가
+app.use(cors()); // 모든 도메인에서의 요청 허용
 
 // JSON 요청 본문 파싱을 위해 middleware 추가
 app.use(express.json());
