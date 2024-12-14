@@ -2,12 +2,42 @@ import React from "react";
 import styled from "styled-components";
 import Button from "../Button";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-export default function StoreDetail({ title, state, phone, location }) {
+export default function StoreDetail({
+  title,
+  state,
+  phone,
+  location,
+  storeId,
+  userId,
+}) {
   const navigate = useNavigate();
 
-  const handleRequestClick = () => {
-    navigate("/App_request");
+  const handleRequestClick = async () => {
+    try {
+      const payload = {
+        userId,
+        storeId,
+        bookingTime: new Date().toISOString(),
+        feature: "Example Feature",
+        childName: "Example Child",
+        childGender: "Example Gender",
+        expectedArrivalTime: new Date().toISOString(),
+      };
+
+      const response = await axios.post(
+        "http://localhost:8000/api/bookings",
+        payload
+      );
+
+      console.log("Reservation created:", response.data);
+      alert("Reservation created successfully!");
+      navigate("/App_request");
+    } catch (error) {
+      console.error("Error creating reservation:", error.message);
+      alert("Failed to create a reservation. Please try again.");
+    }
   };
 
   return (

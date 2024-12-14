@@ -5,6 +5,7 @@ import { mapdata } from "../../data/mapdata";
 import BottomSheet from "../../components/bottomsheet/BottomSheet";
 import Guide from "../../assets/guide.svg";
 import App_guide from "./App_guide";
+import Progress from "../../components/Progress";
 
 export default function App_main() {
   const center = { lat: 37.371421, lng: 127.104744 };
@@ -43,6 +44,7 @@ export default function App_main() {
             />
           ))}
         </Map>
+        <Progress />
         <BottomSheet />
       </Container>
     </>
