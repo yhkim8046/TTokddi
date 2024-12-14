@@ -2,42 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import Button from "../Button";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
-export default function StoreDetail({
-  title,
-  state,
-  phone,
-  location,
-  storeId,
-  userId,
-}) {
+export default function StoreDetail({ title, state, phone, location }) {
   const navigate = useNavigate();
 
-  const handleRequestClick = async () => {
-    try {
-      const payload = {
-        userId,
-        storeId,
-        bookingTime: new Date().toISOString(),
-        feature: "Example Feature",
-        childName: "Example Child",
-        childGender: "Example Gender",
-        expectedArrivalTime: new Date().toISOString(),
-      };
-
-      const response = await axios.post(
-        "http://localhost:8000/api/bookings",
-        payload
-      );
-
-      console.log("Reservation created:", response.data);
-      alert("Reservation created successfully!");
-      navigate("/App_request");
-    } catch (error) {
-      console.error("Error creating reservation:", error.message);
-      alert("Failed to create a reservation. Please try again.");
-    }
+  const handleRequestClick = () => {
+    navigate("/App_request");
   };
 
   return (
@@ -66,21 +36,18 @@ const DetailContainer = styled.div`
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
-
 const ListContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
   margin-top: 20px;
 `;
-
 const Img = styled.div`
   width: 100px;
   height: 100px;
   border: solid 1px #d3d3d3;
   border-radius: 12px;
 `;
-
 const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -88,19 +55,16 @@ const InfoContainer = styled.div`
   margin-left: 16px;
   gap: 12px;
 `;
-
 const BtnContainer = styled.div`
   display: flex;
   flex-direction: row;
 `;
-
 const StoreName = styled.div`
   width: 144px;
   flex-flow: row wrap;
   font-size: 16px;
   font-weight: 700;
 `;
-
 const OPBtn = styled.div`
   display: flex;
   align-items: center;
@@ -116,12 +80,10 @@ const OPBtn = styled.div`
   font-size: 12px;
   font-weight: 600;
 `;
-
 const Phone = styled.div`
   font-size: 16px;
   color: #5c5c5c;
 `;
-
 const Location = styled.div`
   font-size: 16px;
   color: #5c5c5c;
