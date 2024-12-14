@@ -1,8 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import Button from "../Button";
+import { useNavigate } from "react-router-dom";
 
 export default function StoreDetail({ title, state, phone, location }) {
+  const navigate = useNavigate();
+
+  const handleRequestClick = () => {
+    navigate("/App_request");
+  };
+
   return (
     <>
       <DetailContainer>
@@ -17,7 +24,7 @@ export default function StoreDetail({ title, state, phone, location }) {
             <Location>{location}</Location>
           </InfoContainer>
         </ListContainer>
-        <Button text="요청 보내기" />
+        <Button text="요청 보내기" onClick={handleRequestClick} />
       </DetailContainer>
     </>
   );

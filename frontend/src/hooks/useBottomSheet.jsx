@@ -17,23 +17,6 @@ export default function useBottomSheet() {
   });
 
   useEffect(() => {
-    const canUserMoveBottomSheet = () => {
-      const { touchMove, isContentAreaTouched } = metrics.current;
-
-      if (!isContentAreaTouched) {
-        return true;
-      }
-
-      if (sheet.current.getBoundingClientRect().y !== MIN_Y) {
-        return true;
-      }
-
-      if (touchMove.movingDirection === "down") {
-        return content.current.scrollTop <= 0;
-      }
-      return false;
-    };
-
     const handleTouchStart = (e) => {
       const { touchStart } = metrics.current;
       touchStart.sheetY = sheet.current.getBoundingClientRect().y;
@@ -43,35 +26,15 @@ export default function useBottomSheet() {
     const handleTouchMove = (e) => {
       const { touchStart, touchMove } = metrics.current;
       const currentTouch = e.touches[0];
-
-      if (touchMove.prevTouchY === undefined) {
-        touchMove.prevTouchY = touchStart.touchY;
-      }
-
-      if (touchMove.prevTouchY === 0) {
-        touchMove.prevTouchY = touchStart.touchY;
-      }
-
-      if (touchMove.prevTouchY < currentTouch.clientY) {
-        touchMove.movingDirection = "down";
-      }
-
-      if (touchMove.prevTouchY > currentTouch.clientY) {
-        touchMove.movingDirection = "up";
-      }
+      touchMove.prevTouchY = touchMove.prevTouchY || touchStart.touchY;
+      touchMove.movingDirection =
+        touchMove.prevTouchY < currentTouch.clientY ? "down" : "up";
 
       if (canUserMoveBottomSheet()) {
         e.preventDefault();
         const touchOffset = currentTouch.clientY - touchStart.touchY;
         let nextSheetY = touchStart.sheetY + touchOffset;
-
-        if (nextSheetY <= MIN_Y) {
-          nextSheetY = MIN_Y;
-        }
-
-        if (nextSheetY >= MAX_Y) {
-          nextSheetY = MAX_Y;
-        }
+        nextSheetY = Math.max(MIN_Y, Math.min(nextSheetY, MAX_Y));
 
         sheet.current.style.setProperty(
           "transform",
@@ -84,43 +47,48 @@ export default function useBottomSheet() {
 
     const handleTouchEnd = () => {
       document.body.style.overflowY = "auto";
-      const { touchMove } = metrics.current;
-      const currentSheetY = sheet.current.getBoundingClientRect().y;
-
-      if (currentSheetY !== MIN_Y) {
-        if (touchMove.movingDirection === "down") {
-          sheet.current.style.setProperty("transform", "translateY(0)");
-        }
-
-        if (touchMove.movingDirection === "up") {
-          sheet.current.style.setProperty(
-            "transform",
-            `translateY(${MIN_Y - MAX_Y}px)`
-          );
-        }
+      if (sheet.current.getBoundingClientRect().y !== MIN_Y) {
+        const translateY =
+          metrics.current.touchMove.movingDirection === "down"
+            ? 0
+            : MIN_Y - MAX_Y;
+        sheet.current.style.setProperty(
+          "transform",
+          `translateY(${translateY}px)`
+        );
       }
+      resetMetrics();
+    };
 
+    const canUserMoveBottomSheet = () => {
+      const { touchMove, isContentAreaTouched } = metrics.current;
+      if (!isContentAreaTouched) return true;
+      if (sheet.current.getBoundingClientRect().y !== MIN_Y) return true;
+      return (
+        touchMove.movingDirection === "down" && content.current.scrollTop <= 0
+      );
+    };
+
+    const resetMetrics = () => {
       metrics.current = {
-        touchStart: {
-          sheetY: 0,
-          touchY: 0,
-        },
-        touchMove: {
-          prevTouchY: 0,
-          movingDirection: "none",
-        },
+        touchStart: { sheetY: 0, touchY: 0 },
+        touchMove: { prevTouchY: 0, movingDirection: "none" },
         isContentAreaTouched: false,
       };
     };
 
-    sheet.current.addEventListener("touchstart", handleTouchStart);
-    sheet.current.addEventListener("touchmove", handleTouchMove);
-    sheet.current.addEventListener("touchend", handleTouchEnd);
+    if (sheet.current) {
+      sheet.current.addEventListener("touchstart", handleTouchStart);
+      sheet.current.addEventListener("touchmove", handleTouchMove);
+      sheet.current.addEventListener("touchend", handleTouchEnd);
+    }
 
     return () => {
-      sheet.current.removeEventListener("touchstart", handleTouchStart);
-      sheet.current.removeEventListener("touchmove", handleTouchMove);
-      sheet.current.removeEventListener("touchend", handleTouchEnd);
+      if (sheet.current) {
+        sheet.current.removeEventListener("touchstart", handleTouchStart);
+        sheet.current.removeEventListener("touchmove", handleTouchMove);
+        sheet.current.removeEventListener("touchend", handleTouchEnd);
+      }
     };
   }, []);
 
@@ -128,10 +96,15 @@ export default function useBottomSheet() {
     const handleTouchStart = () => {
       metrics.current.isContentAreaTouched = true;
     };
-    content.current.addEventListener("touchstart", handleTouchStart);
+
+    if (content.current) {
+      content.current.addEventListener("touchstart", handleTouchStart);
+    }
 
     return () => {
-      content.current.removeEventListener("touchstart", handleTouchStart);
+      if (content.current) {
+        content.current.removeEventListener("touchstart", handleTouchStart);
+      }
     };
   }, []);
 
