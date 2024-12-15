@@ -37,6 +37,8 @@ export default function App_request() {
         return;
       }
 
+      console.log(formData);
+
       const payload = {
         userId: "675df69a3900ebf6eee7fd7b",
         storeId: "675df69a3900ebf6eee7fd7d",
@@ -56,7 +58,7 @@ export default function App_request() {
 
       navigate("/"); // 요청 완료 후 메인 페이지로 이동
     } catch (error) {
-      console.error("예약 생성 중 오류:", error.message);
+      console.error("예약 생성 중 오류:", error);
       alert("예약 생성에 실패했습니다. 다시 시도해주세요.");
     }
   };
