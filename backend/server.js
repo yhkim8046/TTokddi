@@ -16,8 +16,8 @@ const connectDB = async () => {
         });
 
         // MongoDB 연결 성공 로그
-        await UserService.seedUsers();
-        await StoreService.seedStores();
+        // await UserService.seedUsers();
+        // await StoreService.seedStores();
         console.log('MongoDB 연결 성공!');
     } catch (error) {
         // MongoDB 연결 실패 로그
