@@ -1,14 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 
-export default function Progress({ title, phone, location }) {
+export default function Progress({ name, contact, address }) {
+
   return (
     <>
       <Container>
         <InfoContainer>
-          <StoreName>{title}</StoreName>
-          <Phone>{phone}</Phone>
-          <Location>{location}</Location>
+          <StoreName>{name}</StoreName>
+          <Phone>{contact}</Phone>
+          <Location>{address}</Location>
         </InfoContainer>
       </Container>
     </>
